@@ -15,11 +15,16 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       # note the below assumes that a host path or volume is mounted into the container at ./Docker (or action will fail) !!!
-      
+
       - name: RUN 'LIQUIBASE STATUS IN A DOCKER CONTAINER'
         uses: docker://liquibase/liquibase:latest
         with:
-          args: --url=${{ secrets.DL_SNOWFLAKE_URL }} --changeLogFile=/dbscripts/masterChanlgeLog.xml --username=${{ secrets.SNOWFLAKE_USERNAME }} --password=${{ secrets.SF_PASSWORD }} --driver=${{ secrets.SF_DRIVER }} --defaultSchemaName=${{ secrets.SNOWFLAKE_SCHEMA_NAME }} --log-level flag status
+          args: --url=${{ secrets.DL_SNOWFLAKE_URL }} --changeLogFile=/dbscripts/masterChanlgeLog.xml --username=${{ secrets.SNOWFLAKE_USERNAME }} --password=${{ secrets.SF_PASSWORD }} --driver=${{ secrets.SF_DRIVER }} --defaultSchemaName=${{ secrets.SNOWFLAKE_SCHEMA_NAME }} updateSql
+
+#      - name: RUN 'LIQUIBASE STATUS IN A DOCKER CONTAINER'
+#        uses: docker://liquibase/liquibase:latest
+#        with:
+#          args: --url=${{ secrets.DL_SNOWFLAKE_URL }} --changeLogFile=/dbscripts/masterChanlgeLog.xml --username=${{ secrets.SNOWFLAKE_USERNAME }} --password=${{ secrets.SF_PASSWORD }} --driver=${{ secrets.SF_DRIVER }} --defaultSchemaName=${{ secrets.SNOWFLAKE_SCHEMA_NAME }} --log-level flag status
 
 #      - name: RUN 'LIQUIBASE updateSQL IN A DOCKER CONTAINER'
 #        uses: docker://liquibase/liquibase:latest
