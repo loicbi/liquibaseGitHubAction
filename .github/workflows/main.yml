@@ -16,10 +16,11 @@ jobs:
       - uses: actions/checkout@v2
       # note the below assumes that a host path or volume is mounted into the container at ./Docker (or action will fail) !!!
 
-      - name: RUN 'LIQUIBASE STATUS IN A DOCKER CONTAINER'
+      - name: LIQUIBASE TEST CONNECTION - DEV_ENT_GOV_CA_DB
         uses: docker://liquibase/liquibase:latest
         with:
-          args: --url=${{ secrets.DL_SNOWFLAKE_URL }} --changeLogFile=/dbscripts/masterChanlgeLog.xml --username=${{ secrets.SNOWFLAKE_USERNAME }} --password=${{ secrets.SF_PASSWORD }} --driver=${{ secrets.SF_DRIVER }} --defaultSchemaName=${{ secrets.SNOWFLAKE_SCHEMA_NAME }} updateSql --log-level flag
+          args: --url=${{ secrets.GOV_SNOWFLAKE_URL }} --changeLogFile=./ENT_GOV_CA_DB/ENT_GOV_CA_DB.xml --username=${{ secrets.SNOWFLAKE_USERNAME }} --driver=${{ secrets.SF_DRIVER }} status -Denv=DEV --verbose
+
 
 #      - name: RUN 'LIQUIBASE STATUS IN A DOCKER CONTAINER'
 #        uses: docker://liquibase/liquibase:latest
