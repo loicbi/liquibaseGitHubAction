@@ -19,7 +19,7 @@ jobs:
       - name: LIQUIBASE TEST CONNECTION - DEV_ENT_GOV_CA_DB
         uses: docker://liquibase/liquibase:latest
         with:
-          args: --url=${{ secrets.DL_SNOWFLAKE_URL }} --changeLogFile=./ENT_GOV_CA_DB/ENT_GOV_CA_DB.xml --username=${{ secrets.SNOWFLAKE_USERNAME }} --password=${{ secrets.SF_PASSWORD }} --driver=com.snowflake.client.jdbc.SnowflakeDriver status -Denv=DEV --verbose --log-level flag
+          args: --url=${{ secrets.DL_SNOWFLAKE_URL }} --changeLogFile=./ENT_GOV_CA_DB/ENT_GOV_CA_DB.xml --username=${{ secrets.SNOWFLAKE_USERNAME }} --password=${{ secrets.SF_PASSWORD }} --driver=${{ secrets.SF_DRIVER }} status -Denv=DEV --verbose --log-level flag
 
 
 #      - name: RUN 'LIQUIBASE STATUS IN A DOCKER CONTAINER'

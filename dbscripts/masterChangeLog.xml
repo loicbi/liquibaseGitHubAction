@@ -8,5 +8,6 @@
     http://www.liquibase.org/xml/ns/pro 
     http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd">
     <!-- <property name="il_db_name" value=${paraname}/> -->
-    <includeAll path="/deploy" relativeToChangelogFile="true"/>
+<!--    <includeAll path="/deploy" relativeToChangelogFile="true"/>-->
+    <includeAll path="/deploy"/>
 </databaseChangeLog>
