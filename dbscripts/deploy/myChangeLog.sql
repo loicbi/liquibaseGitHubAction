@@ -9,6 +9,8 @@ create or replace table DEMO_DB.ALF_LIQUIBASE.QUALTRICS
     EXECUTION_FLAG BOOLEAN
 );
 
+
+
 --changeset a.loic:2 labels:example-label
 --comment: insert a
 INSERT INTO DEMO_DB.ALF_LIQUIBASE.QUALTRICS (SURVEY_ID, EXECUTION_FLAG)
