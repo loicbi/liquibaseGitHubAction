@@ -19,8 +19,7 @@ jobs:
       - name: RUN 'LIQUIBASE STATUS IN A DOCKER CONTAINER'
         uses: docker://liquibase/liquibase:latest
         with:
-          args: --url=${{ secrets.DL_SNOWFLAKE_URL }} --changeLogFile=/dbscripts/masterChangeLog.xml
-#          args: --url=${{ secrets.DL_SNOWFLAKE_URL }} --changeLogFile=/dbscripts/masterChangeLog.xml --username=${{ secrets.SNOWFLAKE_USERNAME }} --password=${{ secrets.SF_PASSWORD }} --driver=${{ secrets.SF_DRIVER }} --defaultSchemaName=${{ secrets.SNOWFLAKE_SCHEMA_NAME }} status
+          args: --url=${{ secrets.DL_SNOWFLAKE_URL }} --changeLogFile=./dbscripts/masterChangeLog.xml --username=${{ secrets.SNOWFLAKE_USERNAME }} --password=${{ secrets.SF_PASSWORD }} --driver=${{ secrets.SF_DRIVER }} --defaultSchemaName=${{ secrets.SNOWFLAKE_SCHEMA_NAME }} status
 
 #      - name: RUN 'LIQUIBASE updateSQL IN A DOCKER CONTAINER'
 #        uses: docker://liquibase/liquibase:latest
