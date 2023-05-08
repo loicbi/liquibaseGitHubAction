@@ -1,54 +1,32 @@
-name: DEV_ENT_CA_DB
+name: CICD_TEST
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the develop branch
   push:
     branches: [ develop ]
+    paths: [ 'dbscripts/deploy/**' ]
 
   workflow_dispatch:
   
 jobs:
-  liquibase-action-gov:
+  liquibase-action-test-1:
     runs-on: ubuntu-latest
     environment: DEV
     steps:
       - uses: actions/checkout@v2
       # note the below assumes that a host path or volume is mounted into the container at ./Docker (or action will fail) !!!
       
-      - name: LIQUIBASE TEST CONNECTION - DEV_ENT_GOV_CA_DB
+      - name: RUN 'LIQUIBASE STATUS IN A DOCKER CONTAINER'
         uses: docker://liquibase/liquibase:latest
         with:
-          args: --url=${{ secrets.GOV_SNOWFLAKE_URL }} --changeLogFile=./ENT_GOV_CA_DB/ENT_GOV_CA_DB.xml --username=${{ secrets.SNOWFLAKE_USERNAME }} --driver=${{ secrets.SF_DRIVER }} status -Denv=DEV --verbose
+          args: --url=${{ secrets.DL_SNOWFLAKE_URL }} --changeLogFile=./dbscripts/masterChangeLog.xml --username=${{ secrets.SNOWFLAKE_USERNAME }} --driver=${{ secrets.SF_DRIVER }} status -Dil_db_name=DEV_ENT_IL_CA_DB -Dgov_db_name=DEV_ENT_GOV_CA_DB --verbose
 
-      - name: LIQUIBASE EXECUTION PLAN
+      - name: RUN 'LIQUIBASE updateSQL IN A DOCKER CONTAINER'
         uses: docker://liquibase/liquibase:latest
         with:
-          args: --url=${{ secrets.GOV_SNOWFLAKE_URL }} --changeLogFile=./ENT_GOV_CA_DB/ENT_GOV_CA_DB.xml --username=${{ secrets.SNOWFLAKE_USERNAME }} --driver=${{ secrets.SF_DRIVER }} updateSQL -Denv=DEV
+          args: --url=${{ secrets.DL_SNOWFLAKE_URL }} --changeLogFile=./dbscripts/masterChangeLog.xml --username=${{ secrets.SNOWFLAKE_USERNAME }} --driver=${{ secrets.SF_DRIVER }} updateSQL -Dil_db_name=DEV_ENT_IL_CA_DB -Dgov_db_name=DEV_ENT_GOV_CA_DB
 
-      - name: LIQUIBASE RUN
-        uses: docker://liquibase/liquibase:latest
-        with:
-          args: --url=${{ secrets.GOV_SNOWFLAKE_URL }} --changeLogFile=./ENT_GOV_CA_DB/ENT_GOV_CA_DB.xml --username=${{ secrets.SNOWFLAKE_USERNAME }} --driver=${{ secrets.SF_DRIVER }} update -Denv=DEV
-  
-  liquibase-action-dl:
-    needs: liquibase-action-gov
-    runs-on: ubuntu-latest
-    environment: DEV
-    steps:
-      - uses: actions/checkout@v2
-      # note the below assumes that a host path or volume is mounted into the container at ./Docker (or action will fail) !!!
-      
-      - name: LIQUIBASE TEST CONNECTION - DEV_ENT_DL_CA_DB
-        uses: docker://liquibase/liquibase:latest
-        with:
-          args: --url=${{ secrets.DL_SNOWFLAKE_URL }} --changeLogFile=./ENT_DL_CA_DB/ENT_DL_CA_DB.xml --username=${{ secrets.SNOWFLAKE_USERNAME }} --driver=${{ secrets.SF_DRIVER }} status -Dil_db_name=DEV_ENT_IL_CA_DB -Dgov_db_name=DEV_ENT_GOV_CA_DB --verbose
-
-      - name: LIQUIBASE EXECUTION PLAN
-        uses: docker://liquibase/liquibase:latest
-        with:
-          args: --url=${{ secrets.DL_SNOWFLAKE_URL }} --changeLogFile=./ENT_DL_CA_DB/ENT_DL_CA_DB.xml --username=${{ secrets.SNOWFLAKE_USERNAME }} --driver=${{ secrets.SF_DRIVER }} updateSQL -Dil_db_name=DEV_ENT_IL_CA_DB -Dgov_db_name=DEV_ENT_GOV_CA_DB
-
-      - name: LIQUIBASE RUN
+      - name: LIQUIBASE RUN UPDATE
         uses: docker://liquibase/liquibase:latest
         with:
           args: --url=${{ secrets.DL_SNOWFLAKE_URL }} --changeLogFile=./ENT_DL_CA_DB/ENT_DL_CA_DB.xml --username=${{ secrets.SNOWFLAKE_USERNAME }} --driver=${{ secrets.SF_DRIVER }} update -Dil_db_name=DEV_ENT_IL_CA_DB -Dgov_db_name=DEV_ENT_GOV_CA_DB
