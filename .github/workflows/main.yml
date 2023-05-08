@@ -4,7 +4,8 @@ on:
   # Triggers the workflow on push or pull request events but only for the develop branch
   push:
     branches: [ 'develop' ]
-    paths: [ 'dbscripts/deploy/**']
+    paths: [ 'dbscripts/**']
+#    paths: [ 'dbscripts/deploy/**']
 
   workflow_dispatch:
   
@@ -19,7 +20,7 @@ jobs:
       - name: RUN 'LIQUIBASE STATUS IN A DOCKER CONTAINER'
         uses: docker://liquibase/liquibase:latest
         with:
-          args: --url=${{ secrets.DL_SNOWFLAKE_URL }} --changeLogFile=/dbscripts/masterChanlgeLog.xml --username=${{ secrets.SNOWFLAKE_USERNAME }} --password=${{ secrets.SF_PASSWORD }} --driver=${{ secrets.SF_DRIVER }} --defaultSchemaName=${{ secrets.SNOWFLAKE_SCHEMA_NAME }} updateSql
+          args: --url=${{ secrets.DL_SNOWFLAKE_URL }} --changeLogFile=/dbscripts/masterChanlgeLog.xml --username=${{ secrets.SNOWFLAKE_USERNAME }} --password=${{ secrets.SF_PASSWORD }} --driver=${{ secrets.SF_DRIVER }} --defaultSchemaName=${{ secrets.SNOWFLAKE_SCHEMA_NAME }} updateSql --log-level flag
 
 #      - name: RUN 'LIQUIBASE STATUS IN A DOCKER CONTAINER'
 #        uses: docker://liquibase/liquibase:latest
