@@ -1,4 +1,8 @@
 from datetime import datetime
 
-now = datetime.now()
-print(now)
+
+def now_date():
+    return datetime.now()
+
+
+now_date()
